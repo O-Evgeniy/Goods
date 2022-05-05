@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\goods.ico</ApplicationIcon>
+    <Product>$(AssemblyName)</Product>
+    <AssemblyName>Goods</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\goods.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GoodsLib\GoodsLib.csproj" />
+    <ProjectReference Include="..\GoodsViewModel\GoodsViewModel.csproj" />
+  </ItemGroup>
+
+</Project>

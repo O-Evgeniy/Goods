@@ -1,0 +1,214 @@
+﻿<Window x:Class="GoodsView.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:GoodsViewModel;assembly=GoodsViewModel"
+        xmlns:local="clr-namespace:GoodsView"
+        mc:Ignorable="d"
+        Title="Goods" Height="700" Width="1000"
+        d:DataContext="{d:DesignInstance Type=vm:MainVM}"
+        Background="#F5D3AB">
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="baseBtnStyle">
+            <Setter Property="Width" Value="120"></Setter>
+            <Setter Property="Height" Value="35"></Setter>
+            <Setter Property="FontSize" Value="13"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            
+        </Style>
+        <Style TargetType="Control" x:Key="baseStyle">
+            <Setter Property="FontSize" Value="14"></Setter>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource baseStyle}"></Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource baseStyle}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                Value="{Binding RelativeSource={RelativeSource Self},
+                    Path=(Validation.Errors)[0].ErrorContent}" />
+                    <Setter Property="Foreground" Value="Red" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"></Setter>
+        </Style>
+        <Style TargetType="DataGrid" BasedOn="{StaticResource baseStyle}"></Style>
+    </Window.Resources>
+    <Grid  Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <DockPanel>
+            <DockPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource MyButtonStyle}">
+                    <Setter Property="Margin" Value="5"></Setter>
+                    <Setter Property="Height" Value="25"></Setter>
+                    <Setter Property="Width" Value="80"></Setter>
+                    <Setter Property="FontSize" Value="13"></Setter>
+                </Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Margin" Value="10,5,0,0"></Setter>
+                    <Setter Property="Width" Value="100"></Setter>
+                </Style>
+            </DockPanel.Resources>
+            <Border Margin="0,0,0,10" BorderBrush="Black" BorderThickness="2" CornerRadius="10" DockPanel.Dock="Left">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Center" Width="150">
+                        <TextBlock HorizontalAlignment="Center" Text="Поставщик"></TextBlock>
+                        <ComboBox FontSize="14" Style="{StaticResource ComboBoxTest2}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding SelectedProvider}" ItemsSource="{Binding ProductProviders,UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Width="80">
+                        <TextBlock  Text="Наценка (%)" HorizontalAlignment="Center"></TextBlock>
+                        <TextBox  HorizontalAlignment="Stretch" Height="22">
+                            <TextBox.Text>
+                                <Binding Path="Markup" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                    <Binding.ValidationRules>
+                                        <local:NumberValidationRule Min="0" Max="200"></local:NumberValidationRule>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left">
+                        <TextBlock  Text="Округление до" HorizontalAlignment="Center"></TextBlock>
+                        <ComboBox FontSize="14" Width="100" Background="White" ItemsSource="{Binding Rounding}" SelectedValue="{Binding Round}" Style="{StaticResource ComboBoxTest2}">
+
+                        </ComboBox>
+                    </StackPanel>
+                    <Button Margin="20,5,10,0" Grid.Column="0" x:Name="btn_load" DockPanel.Dock="Left" Content="Добавить" Click="btn_load_Click">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource baseBtnStyle}">
+                                <Setter Property="Background" Value="#FFFFFF"  />
+                                <Setter Property="Foreground" Value="Black"  />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3">
+                                                <Border.Style>
+                                                    <Style TargetType="{x:Type Border}">
+                                                        <Setter Property="Background" Value="#FFFFFF"  />
+                                                        <Style.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Background" Value="LightGray" />
+                                                            </Trigger>
+                                                            <Trigger Property="IsEnabled" Value="False">
+                                                                <Setter Property="Background" Value="#FFBDBDBD"/>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+
+                                                </Border.Style>
+                                                <Grid>
+                                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{TemplateBinding Button.Content}" ></TextBlock>
+                                                </Grid>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </DockPanel>
+            </Border>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" x:Name="btn_clear" HorizontalAlignment="Right" Content="Очистить" Click="btn_clear_Click">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource baseBtnStyle}">
+                            <Setter Property="Background" Value="#FFFFFF"  />
+                            <Setter Property="Foreground" Value="Black"  />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3">
+                                            <Border.Style>
+                                                <Style TargetType="{x:Type Border}">
+                                                    <Setter Property="Background" Value="#FFFFFF"  />
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#FF948E" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsEnabled" Value="False">
+                                                            <Setter Property="Background" Value="#FFBDBDBD"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+
+                                            </Border.Style>
+                                            <Grid>
+                                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{TemplateBinding Button.Content}" ></TextBlock>
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Grid.Column="0" DockPanel.Dock="Left" x:Name="btn_save" BorderThickness="3" Content="Скачать" Click="btn_save_Click">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource baseBtnStyle}">
+                            <Setter Property="Background" Value="#B4E8C5 "  />
+                            <Setter Property="Foreground" Value="Black"  />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3">
+                                            <Border.Style>
+                                                <Style TargetType="{x:Type Border}">
+                                                    <Setter Property="Background" Value="#B4E8C5"  />
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#27E680" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsEnabled" Value="False">
+                                                            <Setter Property="Background" Value="#FFBDBDBD"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+
+                                            </Border.Style>
+                                            <Grid>
+                                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{TemplateBinding Button.Content}" ></TextBlock>
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </DockPanel>
+        <DataGrid AutoGenerateColumns="False" Grid.Row="1"  ItemsSource="{Binding Products}">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                    <Setter Property="FontWeight" Value="DemiBold"></Setter>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <!--<DataGridTextColumn Width="20*" Header="№" IsReadOnly="True" Binding="{Binding Id}"></DataGridTextColumn>-->
+                <DataGridTextColumn Width="50*" Header="Штрих-код" IsReadOnly="True" Binding="{Binding Barcode}"></DataGridTextColumn>
+                <DataGridTextColumn Width="50*" Header="Код" IsReadOnly="True" Binding="{Binding ExternalCode}"></DataGridTextColumn>
+                <DataGridTextColumn Width="100*" Header="Наименование" IsReadOnly="True" Binding="{Binding Name}"></DataGridTextColumn>
+                <DataGridTextColumn Width="30*" Header="Остаток" IsReadOnly="True" Binding="{Binding Count}"></DataGridTextColumn>
+                <DataGridTextColumn Width="30*" IsReadOnly="True" Binding="{Binding PurchasePricePerUnit}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="Цена закупки" TextWrapping="WrapWithOverflow"></TextBlock>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Width="50*" Header="Артикул" IsReadOnly="True" Binding="{Binding ArticleNumber}"></DataGridTextColumn>
+                <DataGridTextColumn Width="20*" Header="Цена" IsReadOnly="True" Binding="{Binding SalePrice}"></DataGridTextColumn>
+                <DataGridTextColumn Width="100*" Header="Описание" IsReadOnly="True" Binding="{Binding Description}"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
