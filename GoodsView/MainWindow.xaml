@@ -58,11 +58,11 @@
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Center" Width="150">
                         <TextBlock HorizontalAlignment="Center" Text="Поставщик"></TextBlock>
-                        <ComboBox FontSize="14" Style="{StaticResource ComboBoxTest2}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding SelectedProvider}" ItemsSource="{Binding ProductProviders,UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                        <ComboBox FontSize="14"  Style="{StaticResource ComboBoxTest2}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding SelectedProvider}" ItemsSource="{Binding ProductProviders,UpdateSourceTrigger=PropertyChanged}"></ComboBox>
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Width="80">
                         <TextBlock  Text="Наценка (%)" HorizontalAlignment="Center"></TextBlock>
-                        <TextBox  HorizontalAlignment="Stretch" Height="22">
+                        <TextBox  HorizontalAlignment="Stretch" Height="24">
                             <TextBox.Text>
                                 <Binding Path="Markup" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                     <Binding.ValidationRules>
