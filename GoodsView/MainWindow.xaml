@@ -79,7 +79,40 @@
 
                         </ComboBox>
                     </StackPanel>
-                    <Button Margin="20,5,10,0" Grid.Column="0" x:Name="btn_load" DockPanel.Dock="Left" Content="Добавить" Click="btn_load_Click">
+                    <Button DockPanel.Dock="Left" Margin="20,5,10,0" Grid.Column="0" x:Name="btn_load" Content="Добавить" Click="btn_load_Click">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource baseBtnStyle}">
+                                <Setter Property="Background" Value="#FFFFFF"  />
+                                <Setter Property="Foreground" Value="Black"  />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3">
+                                                <Border.Style>
+                                                    <Style TargetType="{x:Type Border}">
+                                                        <Setter Property="Background" Value="#FFFFFF"  />
+                                                        <Style.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Background" Value="LightGray" />
+                                                            </Trigger>
+                                                            <Trigger Property="IsEnabled" Value="False">
+                                                                <Setter Property="Background" Value="#FFBDBDBD"/>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+
+                                                </Border.Style>
+                                                <Grid>
+                                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{TemplateBinding Button.Content}" ></TextBlock>
+                                                </Grid>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button  Margin="20,5,10,0" Grid.Column="0" x:Name="btn_update" DockPanel.Dock="Left" Content="Обновить" Click="btn_update_Click">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource baseBtnStyle}">
                                 <Setter Property="Background" Value="#FFFFFF"  />
@@ -206,7 +239,7 @@
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Width="50*" Header="Артикул" IsReadOnly="True" Binding="{Binding ArticleNumber}"></DataGridTextColumn>
-                <DataGridTextColumn Width="20*" Header="Цена" IsReadOnly="True" Binding="{Binding SalePrice}"></DataGridTextColumn>
+                <DataGridTextColumn Width="20*" Header="Цена" Binding="{Binding SalePrice}"></DataGridTextColumn>
                 <DataGridTextColumn Width="100*" Header="Описание" IsReadOnly="True" Binding="{Binding Description}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>

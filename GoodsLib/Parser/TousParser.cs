@@ -36,28 +36,19 @@ namespace GoodsLib.Parser
                         var cell = row.GetCell(row.FirstCellNum);
                         if (string.IsNullOrEmpty(cell.ToString()))
                             return consignment;
-                        string prevValue = null;
-                        ICell first = row.GetCell(row.FirstCellNum);
-                        if (first.CellType == CellType.Error)
-                            break;
-                        for (int j = row.FirstCellNum; j < cellCount; j++)
+                        if (cell.CellType == CellType.Error)
+                               break;
+                            foreach (var num in ValueableCellsNumber)
                         {
-                            cell = row.GetCell(j);
-
+                            cell = row.GetCell(num - 1);
                             if (cell != null)
                             {
                                 var value = ParseCell(cell);
-                                if (value == string.Empty)
-                                    continue;
-                                if (cell.Address.Equals(first.Address) && value == string.Empty)
-                                    break;
                                 list.Add(value);
-                                prevValue = value;
                             }
                         }
-                        if (list.Count == 0)
-                            break;
                         consignment.Products.Add(new TousProduct(list, markup, round));
+
                     }
                 }
                 return consignment;
@@ -71,6 +62,21 @@ namespace GoodsLib.Parser
                 throw new ParseException("Данные повреждены или выбран неправильный поставщик", e);
             }
         }
+
+        List<int> ValueableCellsNumber = new List<int>()
+        {
+            2,
+            4,
+            12,
+            19,
+            30,
+            52,
+            56,
+            60,
+            66,
+            69,
+            74
+        };
 
         private static string ParseCell(ICell cell)
         {

@@ -83,6 +83,11 @@ namespace GoodsViewModel
             Products = new ObservableCollection<ProductVM>(table.Products.Select(p => new ProductVM(p)));
         }
 
+        public void Update()
+        {
+            Products.ForEach(p => p.Update(markup, round));
+        }
+
         public void ClearProducts()
         {
             table.Products.Clear();

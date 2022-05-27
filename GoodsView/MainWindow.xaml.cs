@@ -77,5 +77,10 @@ namespace GoodsView
         {
             vm.ClearProducts();
         }
+
+        private void btn_update_Click(object sender, RoutedEventArgs e)
+        {
+            vm.Update();
+        }
     }
 }
