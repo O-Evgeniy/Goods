@@ -17,6 +17,7 @@ using Microsoft.Win32;
 using GoodsViewModel;
 using System.Collections.ObjectModel;
 using GoodsLib.Entity;
+using GoodsLib;
 
 namespace GoodsView
 {
@@ -34,7 +35,7 @@ namespace GoodsView
 
         private void btn_load_Click(object sender, RoutedEventArgs e)
         {
-            if (vm.SelectedProvider == ProductProvider.none)
+            if (vm.SelectedProvider == ProductProviderEnum.none)
             {
                 MessageBox.Show("Сначала необходимо выбрать поставщика в поле \"Поставщик\"", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;

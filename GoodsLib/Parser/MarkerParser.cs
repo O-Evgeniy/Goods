@@ -58,7 +58,53 @@ namespace GoodsLib.Parser
             }
             catch (Exception e)
             {
-                throw new ParseException("Данные повреждены или выбран неправильный поставщик",e);
+                throw new ParseException("Данные повреждены или выбран неправильный поставщик", e);
+            }
+        }
+
+        public IConsignment<MarkerProduct> Parse(Stream stream, ExcelFormat format, double markup, int round)
+        {
+            IConsignment<MarkerProduct> consignment = new Consignment<MarkerProduct>();
+            ISheet sheet;
+            try
+            {
+                IWorkbook woorkbook;
+                if (format == ExcelFormat.XLSX)
+                    woorkbook = new XSSFWorkbook(stream);
+                else
+                    woorkbook = new HSSFWorkbook(stream);
+                sheet = woorkbook.GetSheetAt(0);
+                IRow headerRow = sheet.GetRow(7);
+                int cellCount = headerRow.LastCellNum;
+
+                for (int i = 9; i < sheet.LastRowNum; i++)
+                {
+                    List<string> list = new List<string>();
+                    IRow row = sheet.GetRow(i);
+                    var cell = row.GetCell(row.FirstCellNum);
+                    if (string.IsNullOrEmpty(cell.ToString()))
+                        return consignment;
+
+                    for (int j = row.FirstCellNum; j < cellCount; j++)
+                    {
+                        if (row.GetCell(j) != null)
+                        {
+                            if (j == 5)
+                                continue;
+                            list.Add(ParseCell(row.GetCell(j)));
+                        }
+                    }
+                    consignment.Products.Add(new MarkerProduct(list, markup, round));
+                }
+                return consignment;
+            }
+            catch (IOException e)
+            {
+                throw new ParseException("Файл занят другим приложением", e);
+            }
+            catch (Exception e)
+            {
+                throw new ParseException("Данные повреждены или выбран неправильный поставщик", e);
             }
         }
 

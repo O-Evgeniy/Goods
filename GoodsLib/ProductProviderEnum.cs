@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GoodsViewModel
+namespace GoodsLib
 {
-    public enum ProductProvider
+    public enum ProductProviderEnum
     {
         none,
         marker,

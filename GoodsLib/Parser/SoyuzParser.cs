@@ -13,43 +13,40 @@ namespace GoodsLib.Parser
 {
     public class SoyuzParser
     {
-        public IConsignment<SoyuzProduct> Parse(string filename, ExcelFormat format, double markup, int round)
+        public IConsignment<SoyuzProduct> Parse(Stream stream, ExcelFormat format, double markup, int round)
         {
             IConsignment<SoyuzProduct> consignment = new Consignment<SoyuzProduct>();
             ISheet sheet;
             try
             {
-                using (var stream = new FileStream(filename, FileMode.Open, FileAccess.Read))
+                IWorkbook woorkbook;
+                if (format == ExcelFormat.XLSX)
+                    woorkbook = new XSSFWorkbook(stream);
+                else
+                    woorkbook = new HSSFWorkbook(stream);
+                sheet = woorkbook.GetSheetAt(0);
+                IRow headerRow = sheet.GetRow(9);
+                int cellCount = headerRow.LastCellNum;
+
+                for (int i = 10; i < sheet.LastRowNum; i++)
                 {
-                    IWorkbook woorkbook;
-                    if (format == ExcelFormat.XLSX)
-                        woorkbook = new XSSFWorkbook(stream);
-                    else
-                        woorkbook = new HSSFWorkbook(stream);
-                    sheet = woorkbook.GetSheetAt(0);
-                    IRow headerRow = sheet.GetRow(9);
-                    int cellCount = headerRow.LastCellNum;
+                    List<string> list = new List<string>();
+                    IRow row = sheet.GetRow(i);
 
-                    for (int i = 10; i < sheet.LastRowNum; i++)
+                    if (row.FirstCellNum == -1)
+                        return consignment;
+                    var cell = row.GetCell(row.FirstCellNum);
+                    if (string.IsNullOrEmpty(cell.ToString()))
+                        return consignment;
+
+                    for (int j = row.FirstCellNum; j < cellCount; j++)
                     {
-                        List<string> list = new List<string>();
-                        IRow row = sheet.GetRow(i);
-
-                        if (row.FirstCellNum == -1)
-                            return consignment;
-                        var cell = row.GetCell(row.FirstCellNum);
-                        if (string.IsNullOrEmpty(cell.ToString()))
-                            return consignment;
-
-                        for (int j = row.FirstCellNum; j < cellCount; j++)
+                        if (row.GetCell(j) != null)
                         {
-                            if (row.GetCell(j) != null)
-                            {
-                                list.Add(ParseCell(row.GetCell(j)));
-                            }
+                            list.Add(ParseCell(row.GetCell(j)));
                         }
-                        consignment.Products.Add(new SoyuzProduct(list, markup, round));
                     }
+                    consignment.Products.Add(new SoyuzProduct(list, markup, round));
                 }
                 return consignment;
             }

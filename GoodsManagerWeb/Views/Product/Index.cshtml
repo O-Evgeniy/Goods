@@ -1,0 +1,72 @@
+﻿@using GoodsManagerWeb.ViewModels
+@using GoodsManagerWeb.Models;
+@using GoodsLib.Entity;
+@using GoodsViewModel
+@using Microsoft.AspNetCore.Mvc;
+@model IndexViewModel
+
+<style>
+    td {
+        padding: 5px;
+    }
+
+    tr:nth-child(even) {
+        background: #CCC
+    }
+
+    tr:nth-child(odd) {
+        background: #FFF
+    }
+</style>
+<form method="post" enctype="multipart/form-data">
+    <label>Выберите поставщика:</label>
+    <select name="provider">
+        @foreach (var p in Model.Providers)
+        {
+            <option value="@p.Id">@p.Name</option>
+        }
+    </select>
+    <label>Наценка</label>
+    <input type="number" name="markup" value="55" />
+    <label>Округление</label>
+    <select name="round">
+        @foreach (var round in Model.Rounds)
+        {
+            <option value="@round">@round</option>
+        }
+    </select>
+    <label>Загрузите файл:</label>
+    <input type="file" name="uploadedFile" />
+    <input type="submit" class="btn btn-dark" name="Index" asp-action="Index" asp-controller="Product" value="Загрузить" />
+    <input type="submit" class="btn btn-dark" asp-action="Save" formmethod="get" asp-controller="Product" value="Сохранить" />
+    <input type="submit" class="btn btn-danger" asp-action="Clear" asp-controller="Product" value="Очистить" />
+</form>
+ 
+<br />
+<table class="table table-sm">
+    <thead class="thead-dark">
+        <tr>
+            <td>Штрих-код</td>
+            <td>Код</td>
+            <td>Наименование</td>
+            <td>Остаток</td>
+            <td>Цена закупки</td>
+            <td>Артикул</td>
+            <td>Цена</td>
+            <td>Описание</td>
+        </tr>
+    </thead>
+    @foreach (ProductVM p in Model.Products)
+    {
+        <tr>
+            <td class="table-primary">@p.Barcode</td>
+            <td class="table-primary">@p.ExternalCode</td>
+            <td class="table-primary">@p.Name</td>
+            <td class="table-primary">@p.Count</td>
+            <td class="table-primary">@p.PurchasePricePerUnit</td>
+            <td class="table-primary">@p.ArticleNumber</td>
+            <td class="table-primary">@p.SalePrice</td>
+            <td class="table-primary">@p.Description</td>
+        </tr>
+    }
+</table>

@@ -31,15 +31,15 @@ namespace GoodsViewModel
             "Все"
         };
 
-        public Dictionary<string, ProductProvider> ProductProviders { get; } = new Dictionary<string, ProductProvider>
+        public Dictionary<string, ProductProviderEnum> ProductProviders { get; } = new Dictionary<string, ProductProviderEnum>
         {
-            ["Маркер"] = ProductProvider.marker,
-            ["Тойс"] = ProductProvider.tous,
-            ["Союз"] = ProductProvider.souyz,
+            ["Маркер"] = ProductProviderEnum.marker,
+            ["Тойс"] = ProductProviderEnum.tous,
+            ["Союз"] = ProductProviderEnum.souyz,
         };
 
-        private ProductProvider productProvider;
-        public ProductProvider SelectedProvider
+        private ProductProviderEnum productProvider;
+        public ProductProviderEnum SelectedProvider
         {
             get { return productProvider; }
             set { productProvider = value; Notify(); }
@@ -99,23 +99,24 @@ namespace GoodsViewModel
             LoadFile(SelectedProvider, path, markup,round);
         }
 
-        private void LoadFile(ProductProvider provider, string path, double markup,int round)
+        private void LoadFile(ProductProviderEnum provider, string path, double markup,int round)
         {
             ExcelFormat format = Path.GetExtension(path).ToLower() == ".xlsx" ? ExcelFormat.XLSX : ExcelFormat.XLS;
             try
             {
+                var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
                 switch (provider)
                 {
-                    case ProductProvider.marker:
-                        var markerCons = new MarkerParser().Parse(path, format, markup, round);
+                    case ProductProviderEnum.marker:
+                        var markerCons = new MarkerParser().Parse(stream, format, markup, round);
                         AddProducts(markerCons.Products);
                         break;
-                    case ProductProvider.tous:
-                        var tousCons = new TousParser().Parse(path, format, markup, round);
+                    case ProductProviderEnum.tous:
+                        var tousCons = new TousParser().Parse(stream, format, markup, round);
                         AddProducts(tousCons.Products);
                         break;
-                    case ProductProvider.souyz:
-                        var soyuzCons = new SoyuzParser().Parse(path, format, markup, round);
+                    case ProductProviderEnum.souyz:
+                        var soyuzCons = new SoyuzParser().Parse(stream,format, markup, round);
                         AddProducts(soyuzCons.Products);
                         break;
                     default: throw new ArgumentException("Поставщик не распознан");
@@ -125,7 +126,7 @@ namespace GoodsViewModel
             {
                 throw;
             }
-            SelectedProvider = ProductProvider.none;
+            SelectedProvider = ProductProviderEnum.none;
         }
 
         public void SaveProducts(string path)
