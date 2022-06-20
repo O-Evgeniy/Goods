@@ -1,11 +1,14 @@
+using GoodsManagerWeb.Models;
 using GoodsManagerWeb.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-builder.Services.AddScoped(typeof(IndexViewModel));
+string connection = builder.Configuration.GetConnectionString("ProductConnection");
+builder.Services.AddDbContext<ProductContext>(opt => opt.UseSqlServer(connection));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

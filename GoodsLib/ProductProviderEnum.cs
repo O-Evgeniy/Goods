@@ -9,6 +9,7 @@ namespace GoodsLib
         none,
         marker,
         tous,
-        souyz
+        souyz,
+        simaland
     }
 }

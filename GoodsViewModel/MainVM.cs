@@ -36,6 +36,7 @@ namespace GoodsViewModel
             ["Маркер"] = ProductProviderEnum.marker,
             ["Тойс"] = ProductProviderEnum.tous,
             ["Союз"] = ProductProviderEnum.souyz,
+            ["Сималэнд"] = ProductProviderEnum.simaland
         };
 
         private ProductProviderEnum productProvider;
@@ -118,6 +119,10 @@ namespace GoodsViewModel
                     case ProductProviderEnum.souyz:
                         var soyuzCons = new SoyuzParser().Parse(stream,format, markup, round);
                         AddProducts(soyuzCons.Products);
+                        break;
+                    case ProductProviderEnum.simaland:
+                        var simaParser = new SimalandParser().Parse(stream, format, markup, round);
+                        AddProducts(simaParser.Products);
                         break;
                     default: throw new ArgumentException("Поставщик не распознан");
                 }

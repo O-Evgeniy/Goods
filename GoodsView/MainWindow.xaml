@@ -228,7 +228,7 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <!--<DataGridTextColumn Width="20*" Header="№" IsReadOnly="True" Binding="{Binding Id}"></DataGridTextColumn>-->
+                <DataGridTextColumn Width="20*" Header="№" IsReadOnly="True" Binding="{Binding Id}"></DataGridTextColumn>
                 <DataGridTextColumn Width="50*" Header="Штрих-код" IsReadOnly="True" Binding="{Binding Barcode}"></DataGridTextColumn>
                 <DataGridTextColumn Width="50*" Header="Код" IsReadOnly="True" Binding="{Binding ExternalCode}"></DataGridTextColumn>
                 <DataGridTextColumn Width="100*" Header="Наименование" IsReadOnly="True" Binding="{Binding Name}"></DataGridTextColumn>

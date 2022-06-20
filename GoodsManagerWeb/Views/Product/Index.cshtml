@@ -18,6 +18,7 @@
         background: #FFF
     }
 </style>
+
 <form method="post" enctype="multipart/form-data">
     <label>Выберите поставщика:</label>
     <select name="provider">
@@ -38,13 +39,13 @@
     <label>Загрузите файл:</label>
     <input type="file" name="uploadedFile" />
     <input type="submit" class="btn btn-dark" name="Index" asp-action="Index" asp-controller="Product" value="Загрузить" />
-    <input type="submit" class="btn btn-dark" asp-action="Save" formmethod="get" asp-controller="Product" value="Сохранить" />
+    <input type="submit" class="btn btn-dark" asp-action="Save" asp-controller="Product" value="Сохранить" />
     <input type="submit" class="btn btn-danger" asp-action="Clear" asp-controller="Product" value="Очистить" />
 </form>
- 
 <br />
+
 <table class="table table-sm">
-    <thead class="thead-dark">
+    <thead>
         <tr>
             <td>Штрих-код</td>
             <td>Код</td>
@@ -56,7 +57,7 @@
             <td>Описание</td>
         </tr>
     </thead>
-    @foreach (ProductVM p in Model.Products)
+    @foreach (ProductBase p in Model.Products)
     {
         <tr>
             <td class="table-primary">@p.Barcode</td>

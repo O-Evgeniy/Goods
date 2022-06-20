@@ -10,11 +10,11 @@ using System.Text;
 
 namespace GoodsLib.Parser
 {
-    public class TousParser
+    public class SimalandParser
     {
-        public IConsignment<TousProduct> Parse(Stream stream, ExcelFormat format, double markup, int round)
+        public IConsignment<SimaLandProduct> Parse(Stream stream, ExcelFormat format, double markup, int round)
         {
-            IConsignment<TousProduct> consignment = new Consignment<TousProduct>();
+            IConsignment<SimaLandProduct> consignment = new Consignment<SimaLandProduct>();
             ISheet sheet;
             try
             {
@@ -27,11 +27,13 @@ namespace GoodsLib.Parser
                 IRow headerRow = sheet.GetRow(12);
                 int cellCount = headerRow.LastCellNum;
 
-                for (int i = 13; i < sheet.LastRowNum; i++)
+                for (int i = 15; i < sheet.LastRowNum; i++)
                 {
                     List<string> list = new List<string>();
                     IRow row = sheet.GetRow(i);
                     var cell = row.GetCell(row.FirstCellNum);
+                    if (cell == null)
+                        return consignment;
                     if (string.IsNullOrEmpty(cell.ToString()))
                         return consignment;
                     if (cell.CellType == CellType.Error)
@@ -45,7 +47,7 @@ namespace GoodsLib.Parser
                             list.Add(value);
                         }
                     }
-                    consignment.Products.Add(new TousProduct(list, markup, round));
+                    consignment.Products.Add(new SimaLandProduct(list, markup, round));
                 }
                 return consignment;
             }
@@ -61,17 +63,20 @@ namespace GoodsLib.Parser
 
         List<int> ValueableCellsNumber = new List<int>()
         {
-            2,
-            4,
-            12,
-            19,
-            30,
-            52,
-            56,
-            60,
-            66,
-            69,
-            74
+            2,   // №
+            4,   // Штрихкод
+            9,   // Код
+            13,  // Товары (работы,услуги)
+            29,  // Инфо
+            32,  // Количество
+            37,  // Розничная цена
+            38,  // Цена
+            42,  // Сумма (без скидки)
+            47,  // Скидка
+            51,  // Цена (со скидкой)
+            52,  // Сумма
+            56,  // Объем
+            73   // Номер заказа
         };
 
         private static string ParseCell(ICell cell)

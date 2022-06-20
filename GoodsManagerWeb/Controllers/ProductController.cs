@@ -2,22 +2,24 @@
 using GoodsLib.Entity;
 using GoodsManagerWeb.Models;
 using GoodsManagerWeb.ViewModels;
+using GoodsViewModel;
 using Microsoft.AspNetCore.Mvc;
+using NPOI.SS.UserModel;
 
 namespace GoodsManagerWeb.Controllers
 {
     public class ProductController : Controller
     {
-        IndexViewModel vm;
-
-        public ProductController(IndexViewModel vm) 
+        private readonly ProductContext db;
+        public ProductController(ProductContext context) 
         {
-            this.vm = vm;
+            db = context;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
+            var vm = new IndexViewModel();
             return View(vm);
         }
 
@@ -26,29 +28,41 @@ namespace GoodsManagerWeb.Controllers
         {
             if (provider == ProductProviderEnum.none || uploadedFile == null)
                 return RedirectToAction("Index");
+
             markup /= 100;
+
+            IndexViewModel vm = new IndexViewModel();
             vm.LoadFile(provider, uploadedFile.FileName, uploadedFile.OpenReadStream(), markup+1, round);
-            //vm.LoadFile(provider, uploadedFile.FileName, markup, round);
+
             return View(vm);
         }
 
         [HttpPost]
         public IActionResult Clear()
         {
-            //vm.Products.Clear();
+            var products = db.Products;
+            foreach(var product in products)
+            {
+                db.Products.Remove(product);
+            }
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public IActionResult Save(IndexViewModel model)
+        [HttpPost]
+        public IActionResult Save(IEnumerable<ProductBase> model)
         {
-            var book  = vm.GetBook();
+            var book  = GetBook(products);
             using(var stream = new MemoryStream())
             { 
                 book.Write(stream);
                 var name = "накладная_" + DateTime.Now.ToString("d")+".xls";
                 return File(stream.ToArray(), "text/plain",name);
             }
+        }
+
+        private IWorkbook GetBook(IList<ProductBase> products)
+        {
+            return ExcelBuilder.GetBook(products, ExcelFormat.XLS);
         }
     }
 }
