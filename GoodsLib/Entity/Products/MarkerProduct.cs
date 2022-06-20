@@ -16,8 +16,8 @@ namespace GoodsLib.Entity
             ExternalCode = list[2];
             Name = list[3];
             Count = (int)TryParse(list[4], typeof(int));
-            PurchasePricePerUnit = (double)TryParse(list[6], typeof(double));
             NoCostPricePerUnit = (double)TryParse(list[5], typeof(double));
+            PurchasePricePerUnit = (double)TryParse(list[6], typeof(double));
             if (double.IsNaN(PurchasePricePerUnit))
                 PurchasePricePerUnit = NoCostPricePerUnit;
             TotalPurchasePrice = (double)TryParse(list[7], typeof(double));

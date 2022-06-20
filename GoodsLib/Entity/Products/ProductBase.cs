@@ -8,7 +8,7 @@ namespace GoodsLib.Entity
         private readonly int round;
 
         public int Id { get; set; }
-        public double PurchasePricePerUnit { get; set; }
+        public double TotalPurchasePrice { get; set; }
 
         [Label("Штрих-код")]
         public string Barcode { get; set; }
@@ -23,7 +23,7 @@ namespace GoodsLib.Entity
         public int Count { get; set; }
 
         [Label("Цена закупки")]
-        public double TotalPurchasePrice { get; set; }
+        public double PurchasePricePerUnit { get; set; }
 
         [Label("Артикул")]
         public string ArticleNumber { get; set; }
