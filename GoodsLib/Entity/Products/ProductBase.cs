@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace GoodsLib.Entity
 {
@@ -66,6 +67,11 @@ namespace GoodsLib.Entity
         {
             var time = DateTime.Now.AddDays(-1);
             return time.ToString("d");
+        }
+
+        internal protected string Split(string str)
+        {
+            return string.Join(", ", str.Split(';', '.', ',', ' ').Where(s => !string.IsNullOrWhiteSpace(s)));
         }
     }
 }

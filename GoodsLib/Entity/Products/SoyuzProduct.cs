@@ -13,7 +13,7 @@ namespace GoodsLib.Entity.Products
         {
             Id = (int)TryParse(list[0], typeof(int));
             ArticleNumber = (string)list[1];
-            Barcode = list[2];
+            Barcode = Split(list[2]);
             Name = list[3];
             Count = (int)TryParse(list[6], typeof(int));
             Volume = (double)TryParse(list[7], typeof(double));

@@ -12,7 +12,7 @@ namespace GoodsLib.Entity
             : base(markup,round)
         {
             Id = (int)TryParse(list[0], typeof(int));
-            Barcode = list[1];
+            Barcode = Split(list[1]);
             ExternalCode = list[2];
             Name = list[3];
             Count = (int)TryParse(list[4], typeof(int));

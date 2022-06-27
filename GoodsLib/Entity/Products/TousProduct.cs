@@ -9,7 +9,7 @@ namespace GoodsLib.Entity
             : base(markup, round)
         {
             Id = (int)TryParse(list[0], typeof(int));
-            Barcode = list[1];
+            Barcode = Split(list[1]);
             ExternalCode = list[2];
             ArticleNumber = list[3];
             Name = list[4];
