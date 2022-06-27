@@ -71,7 +71,8 @@ namespace GoodsLib.Entity
 
         internal protected string Split(string str)
         {
-            return string.Join(", ", str.Split(';', '.', ',', ' ').Where(s => !string.IsNullOrWhiteSpace(s)));
+            return string.Join(", ", str.Split(new string[] { ";", ".", ",", " " },StringSplitOptions.RemoveEmptyEntries));
+            //return string.Join(", ", str.Split(';', '.', ',', ' ').Where(s => !string.IsNullOrWhiteSpace(s)));
         }
     }
 }
