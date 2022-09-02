@@ -19,10 +19,15 @@ namespace GoodsViewModel
         private readonly ResultTable table;
 
         private ObservableCollection<ProductVM> products = new ObservableCollection<ProductVM>();
+
         public ObservableCollection<ProductVM> Products
         {
             get { return products; }
-            set { products = value; Notify(); }
+            set
+            {
+                products = value;
+                Notify();
+            }
         }
 
         //private ObservableCollection<string> loadedConsignment = new ObservableCollection<string>();
@@ -31,19 +36,26 @@ namespace GoodsViewModel
             "Все"
         };
 
-        public Dictionary<string, ProductProviderEnum> ProductProviders { get; } = new Dictionary<string, ProductProviderEnum>
-        {
-            ["Маркер"] = ProductProviderEnum.marker,
-            ["Тойс"] = ProductProviderEnum.tous,
-            ["Союз"] = ProductProviderEnum.souyz,
-            ["Сималэнд"] = ProductProviderEnum.simaland
-        };
+        public Dictionary<string, ProductProviderEnum> ProductProviders { get; } =
+            new Dictionary<string, ProductProviderEnum>
+            {
+                ["Маркер"] = ProductProviderEnum.marker,
+                ["Тойс"] = ProductProviderEnum.tous,
+                ["Союз"] = ProductProviderEnum.souyz,
+                ["Сималэнд"] = ProductProviderEnum.simaland,
+                ["Сималэнд_v2"] = ProductProviderEnum.simaland_v2
+            };
 
         private ProductProviderEnum productProvider;
+
         public ProductProviderEnum SelectedProvider
         {
             get { return productProvider; }
-            set { productProvider = value; Notify(); }
+            set
+            {
+                productProvider = value;
+                Notify();
+            }
         }
 
         public List<int> Rounding { get; } = new List<int>
@@ -53,6 +65,7 @@ namespace GoodsViewModel
         };
 
         private int round = 1;
+
         public int Round
         {
             get { return round; }
@@ -60,6 +73,7 @@ namespace GoodsViewModel
         }
 
         private double markup = 1.55;
+
         public int Markup
         {
             get { return (int)(markup * 100 - 100); }
@@ -97,10 +111,10 @@ namespace GoodsViewModel
 
         public void LoadFile(string path)
         {
-            LoadFile(SelectedProvider, path, markup,round);
+            LoadFile(SelectedProvider, path, markup, round);
         }
 
-        private void LoadFile(ProductProviderEnum provider, string path, double markup,int round)
+        private void LoadFile(ProductProviderEnum provider, string path, double markup, int round)
         {
             ExcelFormat format = Path.GetExtension(path).ToLower() == ".xlsx" ? ExcelFormat.XLSX : ExcelFormat.XLS;
             try
@@ -117,12 +131,16 @@ namespace GoodsViewModel
                         AddProducts(tousCons.Products);
                         break;
                     case ProductProviderEnum.souyz:
-                        var soyuzCons = new SoyuzParser().Parse(stream,format, markup, round);
+                        var soyuzCons = new SoyuzParser().Parse(stream, format, markup, round);
                         AddProducts(soyuzCons.Products);
                         break;
                     case ProductProviderEnum.simaland:
                         var simaParser = new SimalandParser().Parse(stream, format, markup, round);
                         AddProducts(simaParser.Products);
+                        break;
+                    case ProductProviderEnum.simaland_v2:
+                        var simaParser_v2 = new SimalandParser_V2().Parse(stream, format, markup, round);
+                        AddProducts(simaParser_v2.Products);
                         break;
                     default: throw new ArgumentException("Поставщик не распознан");
                 }
@@ -131,6 +149,7 @@ namespace GoodsViewModel
             {
                 throw;
             }
+
             SelectedProvider = ProductProviderEnum.none;
         }
 
