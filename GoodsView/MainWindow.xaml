@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:GoodsView"
         mc:Ignorable="d"
         Title="Goods" Height="700" Width="1000"
-        d:DataContext="{d:DesignInstance Type=vm:MainVM}"
+        d:DataContext="{d:DesignInstance Type=vm:MainVm}"
         Background="#F5D3AB">
     <Window.Resources>
         <Style TargetType="Button" x:Key="baseBtnStyle">
