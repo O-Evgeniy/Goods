@@ -1,5 +1,27 @@
-<h3>Goods</h3>
+@page "/goods"
+
+<PageTitle>Goods</PageTitle>
+
+<h1>Goods</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<select>
+    
+</select>
+<button class="btn btn-primary" @onclick="IncrementCount">Добавить</button>
+<button class="btn btn-primary" @onclick="IncrementCount">Обновить</button>
+<button class="btn btn-primary" @onclick="IncrementCount">Скачать</button>
+<button class="btn btn-primary" @onclick="IncrementCount">Очистить</button>
+
+<p role="status">Current count: @currentCount</p>
 
 @code {
-    
+private int currentCount = 0;
+
+private void IncrementCount()
+{
+currentCount++;
+}
+
 }
