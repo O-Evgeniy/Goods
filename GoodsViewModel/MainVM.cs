@@ -43,7 +43,8 @@ namespace GoodsViewModel
                 ["Тойс"] = ProductProviderEnum.tous,
                 ["Союз"] = ProductProviderEnum.souyz,
                 ["Сималэнд"] = ProductProviderEnum.simaland,
-                ["Сималэнд_v2"] = ProductProviderEnum.simaland_v2
+                ["Сималэнд_v2"] = ProductProviderEnum.simaland_v2,
+                ["Маркер_v2"] = ProductProviderEnum.marker_v2
             };
 
         private ProductProviderEnum productProvider;
@@ -139,8 +140,12 @@ namespace GoodsViewModel
                         AddProducts(simaParser.Products);
                         break;
                     case ProductProviderEnum.simaland_v2:
-                        var simaParser_v2 = new SimalandParser_V2().Parse(stream, format, markup, round);
+                        var simaParser_v2 = new SimalandParserV2().Parse(stream, format, markup, round);
                         AddProducts(simaParser_v2.Products);
+                        break;
+                    case ProductProviderEnum.marker_v2:
+                        var markerParser_v2 = new MarkerParserV2().Parse(stream, format, markup, round);
+                        AddProducts(markerParser_v2.Products);
                         break;
                     default: throw new ArgumentException("Поставщик не распознан");
                 }

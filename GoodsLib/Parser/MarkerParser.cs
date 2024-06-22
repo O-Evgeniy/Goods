@@ -42,7 +42,7 @@ namespace GoodsLib.Parser
                         {
                             if (row.GetCell(j) != null)
                             {
-                                if (j == 5)
+                                if (j == 6)
                                     continue;
                                 list.Add(ParseCell(row.GetCell(j)));
                             }
@@ -89,7 +89,7 @@ namespace GoodsLib.Parser
                     {
                         if (row.GetCell(j) != null)
                         {
-                            if (j == 5)
+                            if (j == 6)
                                 continue;
                             list.Add(ParseCell(row.GetCell(j)));
                         }
@@ -116,6 +116,8 @@ namespace GoodsLib.Parser
                     return cell.BooleanCellValue.ToString();
                 case CellType.Numeric:
                     return cell.NumericCellValue.ToString();
+                case CellType.Error:
+                    return string.Empty;
                 default:
                     return cell.StringCellValue;
             }

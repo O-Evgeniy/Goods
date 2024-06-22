@@ -1,20 +1,21 @@
-﻿using GoodsLib.Entity;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using GoodsLib.Entity;
+using GoodsLib.Entity.Products;
 using GoodsLib.Interface;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace GoodsLib.Parser
 {
-    public class TousParser
+    public class MarkerParserV2
     {
-        public IConsignment<TousProduct> Parse(Stream stream, ExcelFormat format, double markup, int round)
+        public IConsignment<MarkerProductV2> Parse(Stream stream, ExcelFormat format, double markup, int round)
         {
-            IConsignment<TousProduct> consignment = new Consignment<TousProduct>();
+            IConsignment<MarkerProductV2> consignment = new Consignment<MarkerProductV2>();
             ISheet sheet;
             try
             {
@@ -24,29 +25,43 @@ namespace GoodsLib.Parser
                 else
                     woorkbook = new HSSFWorkbook(stream);
                 sheet = woorkbook.GetSheetAt(0);
-                IRow headerRow = sheet.GetRow(12);
+                IRow headerRow = sheet.GetRow(7);
                 int cellCount = headerRow.LastCellNum;
 
-                for (int i = 13; i < sheet.LastRowNum; i++)
+                for (int i = 9; i < sheet.LastRowNum; i++)
                 {
+                    if (i == 64)
+                    {
+                    }
+
                     List<string> list = new List<string>();
                     IRow row = sheet.GetRow(i);
-                    var cell = row.GetCell(row.FirstCellNum);
-                    if (string.IsNullOrEmpty(cell.ToString()))
+                    var firstCell = row.GetCell(row.FirstCellNum);
+                    if (string.IsNullOrEmpty(firstCell.ToString()))
                         return consignment;
-                    if (cell.CellType == CellType.Error)
-                        break;
-                    foreach (var num in ValueableCellsNumber)
+
+                    for (int j = row.FirstCellNum; j < cellCount; j++)
                     {
-                        cell = row.GetCell(num - 1);
+                        var cell = row.GetCell(j);
+
+                        Debug.Assert(cell.CellType is CellType.Error);
+
+                        if (j == row.FirstCellNum && cell.CellType is CellType.Error)
+                        {
+                            return consignment;
+                        }
+
                         if (cell != null)
                         {
-                            var value = ParseCell(cell);
-                            list.Add(value);
+                            if (j == 8)
+                                continue;
+                            list.Add(ParseCell(cell));
                         }
                     }
-                    consignment.Products.Add(new TousProduct(list, markup, round));
+
+                    consignment.Products.Add(new MarkerProductV2(list, markup, round));
                 }
+
                 return consignment;
             }
             catch (IOException e)
@@ -58,21 +73,6 @@ namespace GoodsLib.Parser
                 throw new ParseException("Данные повреждены или выбран неправильный поставщик", e);
             }
         }
-
-        List<int> ValueableCellsNumber = new List<int>()
-        {
-            2,
-            4,
-            12,
-            19,
-            30,
-            52,
-            56,
-            60,
-            66,
-            69,
-            74
-        };
 
         private static string ParseCell(ICell cell)
         {

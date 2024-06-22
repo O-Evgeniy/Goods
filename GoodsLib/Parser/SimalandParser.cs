@@ -87,8 +87,10 @@ namespace GoodsLib.Parser
                     return cell.BooleanCellValue.ToString();
                 case CellType.Numeric:
                     return cell.NumericCellValue.ToString();
+                case CellType.Error:
+                    return string.Empty;
                 default:
-                    return cell.CellType == CellType.Error ? string.Empty : cell.StringCellValue;
+                    return cell.StringCellValue;
             }
         }
     }
