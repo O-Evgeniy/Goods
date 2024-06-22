@@ -11,6 +11,7 @@ namespace GoodsLib
         tous,
         souyz,
         simaland,
-        simaland_v2
+        simaland_v2,
+        marker_v2
     }
 }
