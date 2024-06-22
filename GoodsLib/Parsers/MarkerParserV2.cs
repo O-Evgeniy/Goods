@@ -17,7 +17,9 @@ namespace GoodsLib.Parsers
             var consignment = new List<MarkerProductV2>();
             try
             {
-                var woorkbook = format == ExcelFormat.Xlsx ? (IWorkbook)new XSSFWorkbook(stream) : new HSSFWorkbook(stream);
+                var woorkbook = format == ExcelFormat.Xlsx
+                    ? (IWorkbook)new XSSFWorkbook(stream)
+                    : new HSSFWorkbook(stream);
                 var sheet = woorkbook.GetSheetAt(0);
                 var headerRow = sheet.GetRow(7);
                 int cellCount = headerRow.LastCellNum;
@@ -33,6 +35,10 @@ namespace GoodsLib.Parsers
                     for (int j = row.FirstCellNum; j < cellCount; j++)
                     {
                         var cell = row.GetCell(j);
+                        if (j == row.FirstCellNum && cell.CellType is CellType.Error)
+                        {
+                            return consignment;
+                        }
 
                         const int countCell = 8; // ячейка "шт" не парсим
                         if (j == countCell)
