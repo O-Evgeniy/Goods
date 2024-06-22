@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace GoodsLib.Entity.Products
+namespace GoodsLib.Models.Products
 {
     public class SoyuzProduct : ProductBase
     {

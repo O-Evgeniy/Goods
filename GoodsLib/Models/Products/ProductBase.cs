@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 
-namespace GoodsLib.Entity
+namespace GoodsLib.Models.Products
 {
     public abstract class ProductBase
     {

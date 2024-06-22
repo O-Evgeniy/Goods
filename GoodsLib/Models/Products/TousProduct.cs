@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GoodsLib.Entity
+namespace GoodsLib.Models.Products
 {
     public class TousProduct : ProductBase
     {

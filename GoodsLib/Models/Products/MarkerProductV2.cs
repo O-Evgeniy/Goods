@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GoodsLib.Entity.Products
+namespace GoodsLib.Models.Products
 {
     public class MarkerProductV2 : ProductBase
     {
