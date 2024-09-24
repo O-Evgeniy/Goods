@@ -40,7 +40,7 @@ namespace GoodsLib.Parsers
                             return consignment;
                         }
 
-                        const int countCell = 8; // ячейка "шт" не парсим
+                        const int countCell = 9; // ячейка "шт" не парсим
                         if (j == countCell)
                         {
                             continue;
