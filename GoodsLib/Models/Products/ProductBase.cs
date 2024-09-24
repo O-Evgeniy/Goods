@@ -4,8 +4,8 @@ namespace GoodsLib.Models.Products
 {
     public abstract class ProductBase
     {
-        private readonly double markup;
-        private readonly int round;
+        private readonly double _markup;
+        private readonly int _round;
 
         public int Id { get; set; }
         public double TotalPurchasePrice { get; set; }
@@ -34,44 +34,40 @@ namespace GoodsLib.Models.Products
         [Label("Описание")]
         public string Description { get; set; }
 
-        public ProductBase(double markup, int round)//наценка
+        protected ProductBase(double markup, int round)//наценка
         {
-            this.markup = markup;
-            this.round = round;
+            _markup = markup;
+            _round = round;
         }
 
-        internal protected object TryParse(string value, Type type)
+        protected static object TryParse(string value, Type type)
         {
             if (type == typeof(double))
             {
-                double val;
-                return double.TryParse(value, out val) ? val : double.NaN;
+                return double.TryParse(value, out var val) ? val : double.NaN;
             }
-            else if (type == typeof(int))
+
+            if (type == typeof(int))
             {
-                int val;
-                return int.TryParse(value, out val) ? val : -1;
+                return int.TryParse(value, out var val) ? val : -1;
             }
-            else
-                return value;
+
+            return value;
         }
 
-        internal protected double Round(double val, int round)
+        protected static double Round(double val, int round)
         {
-            var res = Math.Ceiling(val / round) * round;
-            return res;
+            return Math.Ceiling(val / round) * round;
         }
 
-        internal protected string GetTime()
+        protected static string GetTime()
         {
-            var time = DateTime.Now.AddDays(-1);
-            return time.ToString("d");
+            return DateTime.Now.AddDays(-1).ToString("d");
         }
 
-        internal protected string Split(string str)
+        protected static string Split(string str)
         {
-            return string.Join(", ", str.Split(new string[] { ";", ".", ",", " " },StringSplitOptions.RemoveEmptyEntries));
-            //return string.Join(", ", str.Split(';', '.', ',', ' ').Where(s => !string.IsNullOrWhiteSpace(s)));
+            return string.Join(", ", str.Split(new[] { ";", ".", ",", " " },StringSplitOptions.RemoveEmptyEntries));
         }
     }
 }
